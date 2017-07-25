@@ -1,0 +1,14 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: filler
+spec:
+  parallelism: 1
+  template:
+    metadata:
+      name: filler
+    spec:
+      containers:
+      - name: fillerc
+        image: gcr.io/[PROJECT_ID]/filler
+      restartPolicy: Never
