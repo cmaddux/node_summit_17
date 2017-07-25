@@ -1,0 +1,14 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: shhworker1
+spec:
+  parallelism: 6
+  template:
+    metadata:
+      name: shhworker1
+    spec:
+      containers:
+      - name: shhworkerc
+        image: gcr.io/[PROJECT_ID]/shhworker_1
+      restartPolicy: Never
