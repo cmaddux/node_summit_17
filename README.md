@@ -12,3 +12,64 @@ The basic task scheduler can be found in the task_scheduler/ directory. The dire
 ## Distributed Worker System
 
 The basic distributed worker system is put together to run on GKE. The following are steps to setup and run the distributed scheduler on GKE:
+
+### Requirements
+
+gcloud - https://cloud.google.com/sdk/gcloud/
+docker - https://docs.docker.com/engine/installation/
+kubectl - https://kubernetes.io/docs/getting-started-guides/gce/#installing-the-kubernetes-command-line-tools-on-your-workstation
+
+### Setup Project via GCloud Console
+
+Go to console.cloud.google.com and create a project.
+
+https://cloud.google.com/resource-manager/docs/creating-managing-projects
+
+### Create a Cluster
+
+(Make sure in the correct project with `gcloud config set project PROJECT`
+
+`gcloud container clusters create NAME`
+
+### Build Docker Containers Locally
+
+From distributed/filler/:
+
+`docker build -t filler .`
+
+From distributed/worker/:
+
+`docker build -t worker .`
+
+### Tag Containers for GCR
+
+`docker tag worker gcr.io/PROJECT_ID/filler`
+`docker tag worker gcr.io/PROJECT_ID/worker`
+
+### Push Containers to GCR
+
+`gcloud docker -- push gcr.io/PROJECT_ID/filler`
+`gcloud docker -- push gcr.io/PROJECT_ID/worker`
+
+### Create Redis Master and Service
+
+`kubectl create -f redis-service.yaml`
+`kubectl create -f redis-master.yaml`
+
+### Create Fill Job
+
+From distributed/filler/:
+
+`kubectl create -f filler.yaml`
+
+### Create Worker Job
+
+From distributed/worker/:
+
+`kubectl create -f worker.yaml`
+
+### Tail Worker Pod Logs
+
+Use awesome script from https://github.com/johanhaleby/kubetail:
+
+`kubetail worker -k pod`
