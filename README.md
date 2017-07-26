@@ -18,7 +18,9 @@ The basic distributed worker system is put together to run on GKE. The following
 ### Requirements
 
 gcloud - https://cloud.google.com/sdk/gcloud/
+
 docker - https://docs.docker.com/engine/installation/
+
 kubectl - https://kubernetes.io/docs/getting-started-guides/gce/#installing-the-kubernetes-command-line-tools-on-your-workstation
 
 ### Setup Project via GCloud Console
