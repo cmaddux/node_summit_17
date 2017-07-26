@@ -44,16 +44,19 @@ From distributed/worker/:
 ### Tag Containers for GCR
 
 `docker tag worker gcr.io/PROJECT_ID/filler`
+
 `docker tag worker gcr.io/PROJECT_ID/worker`
 
 ### Push Containers to GCR
 
 `gcloud docker -- push gcr.io/PROJECT_ID/filler`
+
 `gcloud docker -- push gcr.io/PROJECT_ID/worker`
 
 ### Create Redis Master and Service
 
 `kubectl create -f redis-service.yaml`
+
 `kubectl create -f redis-master.yaml`
 
 ### Create Fill Job
