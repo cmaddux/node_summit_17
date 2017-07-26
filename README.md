@@ -11,6 +11,8 @@ The basic task scheduler can be found in the task_scheduler/ directory. The dire
 
 ## Distributed Worker System
 
+
+
 The basic distributed worker system is put together to run on GKE. The following are steps to setup and run the distributed scheduler on GKE:
 
 ### Requirements
@@ -27,7 +29,7 @@ https://cloud.google.com/resource-manager/docs/creating-managing-projects
 
 ### Create a Cluster
 
-(Make sure in the correct project with `gcloud config set project PROJECT`
+(Make sure in the correct project with `gcloud config set project PROJECT`)
 
 `gcloud container clusters create NAME`
 
@@ -76,3 +78,11 @@ From distributed/worker/:
 Use awesome script from https://github.com/johanhaleby/kubetail:
 
 `kubetail worker -k pod`
+
+### Tear Down
+
+`kubectl delete jobs/worker`
+
+`kubectl delete jobs/filler`
+
+`kubectl delete services/redis`
