@@ -106,8 +106,6 @@ And make sure Google Container Registry API is enabled for project.
 
 ### Tail Worker Pod Logs
 
-Use awesome script from https://github.com/johanhaleby/kubetail:
-
 `./kubetail worker -k pod`
 
 ### Tear Down
