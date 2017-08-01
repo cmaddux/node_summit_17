@@ -29,32 +29,44 @@ The basic distributed worker system is put together to run on GKE. The following
 ### Requirements
 
 gcloud - https://cloud.google.com/sdk/gcloud/
+`gcloud -v`
 
 docker - https://docs.docker.com/engine/installation/
+`docker -v`
 
 kubectl - https://kubernetes.io/docs/getting-started-guides/gce/#installing-the-kubernetes-command-line-tools-on-your-workstation
+`kubectl version`
 
-### Setup Project via GCloud Console
-
-Go to console.cloud.google.com and create a project.
+### Setup GCloud Project
 
 https://cloud.google.com/resource-manager/docs/creating-managing-projects
 
+`gcloud config set project PROJECT_ID`
+
+Make sure Google Compute Engine API is enabled for project.
+
+1. From console menu select 'API Manager'.
+2. Click blue enable API button.
+3. Search for'Google Compute Engine API' and select.
+4. Click blue enable button.
+
+And make sure Google Container Registry API is enabled for project.
+
+1. From console menu select 'API Manager'.
+2. Click blue enable API button.
+3. Search for 'Google Container Registry API' and select.
+4. Click blue enable button.
+
 ### Create a Cluster
 
-(Make sure in the correct project with `gcloud config set project PROJECT`)
-
-`gcloud container clusters create NAME`
+(To list available zones run `gcloud compute zones list`)
+`gcloud container clusters create CLUSTER_NAME --zone [ZONE]`
 
 ### Build Docker Containers Locally
 
-From distributed/filler/:
+`docker build -t filler ./distributed/task_filler/`
 
-`docker build -t filler .`
-
-From distributed/worker/:
-
-`docker build -t worker .`
+`docker build -t worker ./distributed/task_worker/`
 
 ### Tag Containers for GCR
 
