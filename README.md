@@ -43,6 +43,7 @@ kubectl - https://kubernetes.io/docs/getting-started-guides/gce/#installing-the-
 kubetail (optional) - this boss script to tail Kubernetes pod logs (https://github.com/johanhaleby/kubetail)
 
 `curl https://raw.githubusercontent.com/johanhaleby/kubetail/master/kubetail > kubetail`
+
 `chmod +x kubetail`
 
 ### Setup GCloud Project
@@ -68,6 +69,7 @@ And make sure Google Container Registry API is enabled for project.
 ### Create a Cluster
 
 (To list available zones run `gcloud compute zones list`)
+
 `gcloud container clusters create CLUSTER_NAME --zone [ZONE]`
 
 ### Build Docker Containers Locally
