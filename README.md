@@ -29,13 +29,21 @@ The basic distributed worker system is put together to run on GKE. The following
 ### Requirements
 
 gcloud - https://cloud.google.com/sdk/gcloud/
+
 `gcloud -v`
 
 docker - https://docs.docker.com/engine/installation/
+
 `docker -v`
 
 kubectl - https://kubernetes.io/docs/getting-started-guides/gce/#installing-the-kubernetes-command-line-tools-on-your-workstation
+
 `kubectl version`
+
+kubetail (optional) - this boss script to tail Kubernetes pod logs (https://github.com/johanhaleby/kubetail)
+
+`curl https://raw.githubusercontent.com/johanhaleby/kubetail/master/kubetail > kubetail`
+`chmod +x kubetail`
 
 ### Setup GCloud Project
 
@@ -82,27 +90,23 @@ And make sure Google Container Registry API is enabled for project.
 
 ### Create Redis Master and Service
 
-`kubectl create -f redis-service.yaml`
+`kubectl create -f ./distributed/redis-service.yaml`
 
-`kubectl create -f redis-master.yaml`
+`kubectl create -f ./distributed/redis-master.yaml`
 
 ### Create Fill Job
 
-From distributed/filler/:
-
-`kubectl create -f filler.yaml`
+`kubectl create -f ./distributed/task_filler/filler.yaml`
 
 ### Create Worker Job
 
-From distributed/worker/:
-
-`kubectl create -f worker.yaml`
+`kubectl create -f ./distributed/task_worker/worker.yaml`
 
 ### Tail Worker Pod Logs
 
 Use awesome script from https://github.com/johanhaleby/kubetail:
 
-`kubetail worker -k pod`
+`./kubetail worker -k pod`
 
 ### Tear Down
 
@@ -111,3 +115,6 @@ Use awesome script from https://github.com/johanhaleby/kubetail:
 `kubectl delete jobs/filler`
 
 `kubectl delete services/redis`
+
+`kubectl delete pods/redis`
+
