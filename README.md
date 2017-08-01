@@ -1,4 +1,4 @@
-# node_summit_17
+# Node Summit 2017
 Reference materials for Node Summit 2017 talk 'Tightly Packed Parallelization To Get Happy Hour Back'
 
 This should provide some reference for putting together the most basic possible Node.js task scheduler using the 'child_process' module. Additionally, this provides material for putting together a basic distributed system for doing work in parallel with Node.js and Kubernetes. This is about as simple as it gets for getting started doing work in parallel with Node.js.
@@ -7,11 +7,22 @@ This should provide some reference for putting together the most basic possible 
 
 Our basic Node.js task scheduler utilizes the 'child_process' module to work on multiple tasks in parallel. This version of the task worker forks Node.js child processes off of the parent, but could be easily modified to spawn other executables or run commands as child processes.
 
-The basic task scheduler can be found in the task_scheduler/ directory. The directory includes an example that imports the task scheduler and tasks to be run and then executes those tasks in parallel. To run the example, navigate to the task_scheduler/examples directory and run `node example1.js`.
+The task scheduler can be found at task_scheduler/task_scheduler.js. The task_scheduler/ directory also includes an example that imports the task scheduler and tasks to be run and then executes those tasks in parallel.
+
+Try it out: 
+
+1. `cd ./task_scheduler/examples`
+2. `npm install` (the task_scheduler uses immutable as a dependency)
+3. `node example1`
+
+The scheduler should fork child processes to run tasks while resources available. As tasks exit, resources are refilled and dependencies are honored. Check out the task_scheduler/examples/tasks directory to view/modify the tasks to run in parallel.
+
+### Improve our scheduler
+
+* Allow for retries if child_process exits with error.
+* Persist stats associated with tasks run and optimize on next run.
 
 ## Distributed Worker System
-
-
 
 The basic distributed worker system is put together to run on GKE. The following are steps to setup and run the distributed scheduler on GKE:
 
@@ -19,31 +30,53 @@ The basic distributed worker system is put together to run on GKE. The following
 
 gcloud - https://cloud.google.com/sdk/gcloud/
 
+`gcloud -v`
+
 docker - https://docs.docker.com/engine/installation/
+
+`docker -v`
 
 kubectl - https://kubernetes.io/docs/getting-started-guides/gce/#installing-the-kubernetes-command-line-tools-on-your-workstation
 
-### Setup Project via GCloud Console
+`kubectl version`
 
-Go to console.cloud.google.com and create a project.
+kubetail (optional) - this boss script to tail Kubernetes pod logs (https://github.com/johanhaleby/kubetail)
+
+`curl https://raw.githubusercontent.com/johanhaleby/kubetail/master/kubetail > kubetail`
+
+`chmod +x kubetail`
+
+### Setup GCloud Project
 
 https://cloud.google.com/resource-manager/docs/creating-managing-projects
 
+`gcloud config set project PROJECT_ID`
+
+Make sure Google Compute Engine API is enabled for project.
+
+1. From console menu select 'API Manager'.
+2. Click blue enable API button.
+3. Search for'Google Compute Engine API' and select.
+4. Click blue enable button.
+
+And make sure Google Container Registry API is enabled for project.
+
+1. From console menu select 'API Manager'.
+2. Click blue enable API button.
+3. Search for 'Google Container Registry API' and select.
+4. Click blue enable button.
+
 ### Create a Cluster
 
-(Make sure in the correct project with `gcloud config set project PROJECT`)
+(To list available zones run `gcloud compute zones list`)
 
-`gcloud container clusters create NAME`
+`gcloud container clusters create CLUSTER_NAME --zone [ZONE]`
 
 ### Build Docker Containers Locally
 
-From distributed/filler/:
+`docker build -t filler ./distributed/task_filler/`
 
-`docker build -t filler .`
-
-From distributed/worker/:
-
-`docker build -t worker .`
+`docker build -t worker ./distributed/task_worker/`
 
 ### Tag Containers for GCR
 
@@ -59,27 +92,21 @@ From distributed/worker/:
 
 ### Create Redis Master and Service
 
-`kubectl create -f redis-service.yaml`
+`kubectl create -f ./distributed/redis-service.yaml`
 
-`kubectl create -f redis-master.yaml`
+`kubectl create -f ./distributed/redis-master.yaml`
 
 ### Create Fill Job
 
-From distributed/filler/:
-
-`kubectl create -f filler.yaml`
+`kubectl create -f ./distributed/task_filler/filler.yaml`
 
 ### Create Worker Job
 
-From distributed/worker/:
-
-`kubectl create -f worker.yaml`
+`kubectl create -f ./distributed/task_worker/worker.yaml`
 
 ### Tail Worker Pod Logs
 
-Use awesome script from https://github.com/johanhaleby/kubetail:
-
-`kubetail worker -k pod`
+`./kubetail worker -k pod`
 
 ### Tear Down
 
@@ -88,3 +115,6 @@ Use awesome script from https://github.com/johanhaleby/kubetail:
 `kubectl delete jobs/filler`
 
 `kubectl delete services/redis`
+
+`kubectl delete pods/redis`
+
