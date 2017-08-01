@@ -59,6 +59,7 @@ function run() {
             // resolve to go to sleep.
             return Promise.all([
                 Promise.resolve(null),
+                Promise.resolve(null),
                 Promise.resolve('sleep'), 
                 Promise.resolve(null)
             ]);
@@ -70,6 +71,7 @@ function run() {
             // If todo list is empty, resolve to
             // exit.
             return Promise.all([
+                Promise.resolve(null),
                 Promise.resolve(null),
                 Promise.resolve('exit'), 
                 Promise.resolve(null)
@@ -92,6 +94,7 @@ function run() {
         if (!depsOk(task, done)) {
             rpush(client, 'todo', taskLabel);
             return Promise.all([
+                Promise.resolve(null),
                 Promise.resolve(null),
                 Promise.resolve('sleep'), 
                 Promise.resolve(null)

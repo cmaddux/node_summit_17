@@ -1,8 +1,8 @@
 FROM node:latest
 
-COPY fill.js /fill.js
+COPY filler.js /filler.js
 
 COPY package.json /package.json
 RUN npm install
 
-CMD node /fill.js
+CMD node /filler.js
