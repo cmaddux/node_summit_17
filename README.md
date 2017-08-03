@@ -56,7 +56,7 @@ Make sure Google Compute Engine API is enabled for project.
 
 1. From console menu select 'API Manager'.
 2. Click blue enable API button.
-3. Search for'Google Compute Engine API' and select.
+3. Search for 'Google Compute Engine API' and select.
 4. Click blue enable button.
 
 Make sure Google Container Registry API is enabled for project.
