@@ -59,12 +59,14 @@ Make sure Google Compute Engine API is enabled for project.
 3. Search for'Google Compute Engine API' and select.
 4. Click blue enable button.
 
-And make sure Google Container Registry API is enabled for project.
+Make sure Google Container Registry API is enabled for project.
 
 1. From console menu select 'API Manager'.
 2. Click blue enable API button.
 3. Search for 'Google Container Registry API' and select.
 4. Click blue enable button.
+
+Update distributed/jobs/filler.yaml and distributed/jobs/worker.yaml image tag replacing [PROJECT_ID] with the id for your gcloud project.
 
 ### Create a Cluster
 
@@ -74,9 +76,9 @@ And make sure Google Container Registry API is enabled for project.
 
 ### Build Docker Containers Locally
 
-`docker build -t filler ./distributed/task_filler/`
+`docker build -t filler -f ./distributed/jobs/Dockerfile.filler ./distributed/jobs/`
 
-`docker build -t worker ./distributed/task_worker/`
+`docker build -t worker -f ./distributed/jobs/Dockerfile.worker ./distributed/jobs/`
 
 ### Tag Containers for GCR
 
@@ -98,11 +100,11 @@ And make sure Google Container Registry API is enabled for project.
 
 ### Create Fill Job
 
-`kubectl create -f ./distributed/task_filler/filler.yaml`
+`kubectl create -f ./distributed/jobs/filler.yaml`
 
 ### Create Worker Job
 
-`kubectl create -f ./distributed/task_worker/worker.yaml`
+`kubectl create -f ./distributed/jobs/worker.yaml`
 
 ### Tail Worker Pod Logs
 
@@ -117,4 +119,6 @@ And make sure Google Container Registry API is enabled for project.
 `kubectl delete services/redis`
 
 `kubectl delete pods/redis`
+
+`gcloud container clusters delete CLUSTER_NAME`
 
