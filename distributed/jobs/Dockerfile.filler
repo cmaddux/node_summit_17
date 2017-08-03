@@ -1,0 +1,15 @@
+FROM node:latest
+
+# COPY TASKS AND UTILS DIRS TO CONTAINER
+ADD ./tasks /tasks/
+ADD ./utils /utils/
+
+# COPY FILLER TO CONTAINER
+COPY filler.js /filler.js
+
+# INSTALL DEPS
+COPY package.json /package.json
+RUN npm install
+
+# SET CMD TO START FILLER
+CMD node /filler.js

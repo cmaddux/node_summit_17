@@ -1,7 +1,8 @@
 FROM node
 
-# COPY TASKS DIR TO CONTAINER
-ADD tasks /tasks/
+# COPY TASKS AND UTILS DIRS TO CONTAINER
+ADD ./tasks /tasks/
+ADD ./utils /utils/
 
 # COPY WORKER TO CONTAINER
 COPY ./worker.js /worker.js
@@ -10,5 +11,5 @@ COPY ./worker.js /worker.js
 COPY ./package.json /package.json
 RUN npm install
 
-# START WORKER
+# SET CMD TO START WORKER
 CMD node /worker.js
