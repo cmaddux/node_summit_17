@@ -120,5 +120,5 @@ Update distributed/jobs/filler.yaml and distributed/jobs/worker.yaml image tag r
 
 `kubectl delete pods/redis`
 
-`gcloud container clusters delete CLUSTER_NAME`
+`gcloud container clusters delete CLUSTER_NAME --zone [ZONE]`
 
