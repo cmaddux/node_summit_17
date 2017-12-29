@@ -1,5 +1,7 @@
 # Node Summit 2017
-Reference materials for Node Summit 2017 talk 'Tightly Packed Parallelization To Get Happy Hour Back'
+Reference materials for Node Summit 2017 talk 'Tightly Packed Parallelization To Get Happy Hour Back'.
+
+The video lives [here](https://vimeo.com/229540607). 
 
 This should provide some reference for putting together the most basic possible Node.js task scheduler using the 'child_process' module. Additionally, this provides material for putting together a basic distributed system for doing work in parallel with Node.js and Kubernetes. This is about as simple as it gets for getting started doing work in parallel with Node.js.
 
